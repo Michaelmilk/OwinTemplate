@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
 
-namespace OwinTemplate
+namespace OwinService
 {
     public class Startup
     {
@@ -22,7 +24,19 @@ namespace OwinTemplate
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            //config.Services.Replace(typeof(IAssembliesResolver), new AssembliesResolver());
             appBuilder.UseWebApi(config);
         }
     }
+
+    class AssembliesResolver : DefaultAssembliesResolver
+    {
+        public override ICollection<Assembly> GetAssemblies()
+        {
+            ICollection<Assembly> assemblies = base.GetAssemblies();
+            var apiAssembly = Assembly.LoadFrom("OwinService.dll");
+            assemblies.Add(apiAssembly);
+            return assemblies;
+        }
+    }   
 }

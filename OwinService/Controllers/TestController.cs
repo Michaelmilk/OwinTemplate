@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace OwinTemplate
+namespace OwinService
 {
     [RoutePrefix("api/Test/")]
     public class TestController: ApiController
